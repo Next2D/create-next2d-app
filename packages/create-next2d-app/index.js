@@ -4,4 +4,4 @@
 
 const gulp = require("gulp");
 
-console.log("index");
+console.log("index", gulp);
