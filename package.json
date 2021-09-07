@@ -1,6 +1,6 @@
 {
   "name": "create-next2d-app",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
@@ -14,8 +14,8 @@
     "url": "git+https://github.com/Next2D/create-next2d-app.git"
   },
   "scripts": {
+    "script": "node tasks/script.js",
     "build": "node tasks/build.js",
-    "create-next2d-app": "node tasks/script.js",
     "publish": "node tasks/publish.js",
     "start": "node tasks/start.js"
   },
