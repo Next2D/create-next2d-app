@@ -15,7 +15,7 @@
     "directory": "packages/create-next2d-app"
   },
   "bin": {
-    "create-react-app": "./index.js"
+    "create-next2d-app": "./index.js"
   },
   "engines": {
     "node": ">=14.0.0"
