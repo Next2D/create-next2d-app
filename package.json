@@ -1,29 +1,29 @@
 {
   "name": "create-next2d-app",
-  "workspaces": [
-    "packages/*"
-  ],
-  "version": "0.0.13",
+  "version": "1.0.0",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
   "homepage": "https://next2d.app",
   "bugs": "https://github.com/Next2D/create-next2d-app/issues",
   "keywords": [
-    "Next2D"
+    "Next2D",
+    "create-next2d-app"
   ],
-  "bin": {
-    "create-next2d-app": "./packages/create-next2d-app/index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/create-next2d-app.git"
   },
-  "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-eslint": "^6.0.0"
+  "bin": {
+    "create-next2d-app": "index.js"
   },
-  "engines": {
-    "node": ">=14.0.0"
+  "dependencies": {
+    "chalk": "4.1.0",
+    "commander": "4.1.1",
+    "cross-spawn": "7.0.3",
+    "fs-extra": "9.0.1",
+    "semver": "7.3.2",
+    "tar-pack": "3.4.1",
+    "validate-npm-package-name": "3.0.0"
   }
 }
