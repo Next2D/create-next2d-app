@@ -17,6 +17,9 @@
   "dependencies": {
     "gulp": "^4.0.2"
   },
+  "devDependencies": {
+    "gulp": "^4.0.2"
+  },
   "engines": {
     "node": ">=14.0.0"
   }
