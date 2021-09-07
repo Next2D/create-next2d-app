@@ -3,7 +3,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
@@ -12,9 +12,6 @@
   "keywords": [
     "Next2D"
   ],
-  "bin": {
-    "create-next2d-app": "./packages/create-next2d-app/index.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/create-next2d-app.git"
