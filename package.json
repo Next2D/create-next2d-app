@@ -1,0 +1,16 @@
+{
+  "name": "create-next2d-app",
+  "version": "0.0.1",
+  "description": "Create Next2D apps with no build configuration.",
+  "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
+  "license": "MIT",
+  "homepage": "https://next2d.app",
+  "bugs": "https://github.com/Next2D/create-next2d-app/issues",
+  "keywords": [
+    "Next2D"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Next2D/create-next2d-app.git"
+  }
+}
