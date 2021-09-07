@@ -19,12 +19,12 @@ npm start
 
 * Bundles the app into static files for develop.
 ```sh
-npm build
+npm run build
 ```
 
 * Bundles the app into static files for production.
 ```sh
-npm build --env="prd"
+npm run build --env="prd"
 ```
 
 * Starts the test runner.

@@ -335,11 +335,11 @@ function install (root, app_name, template, package_json, dependencies)
                         console.log("    Starts the development server.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm build")}`);
+                        console.log(`  ${chalk.green("npm run build")}`);
                         console.log("    Bundles the app into static files for develop.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm build --env=\"prd\"")}`);
+                        console.log(`  ${chalk.green("npm run build --env=\"prd\"")}`);
                         console.log("    Bundles the app into static files for production.");
 
                         console.log();
