@@ -14,10 +14,10 @@
     "url": "git+https://github.com/Next2D/create-next2d-app.git",
     "directory": "packages/create-next2d-app"
   },
-  "bin": {
-    "create-next2d-app": "./index.js"
+  "dependencies": {
+    "gulp": "^4.0.2"
   },
   "engines": {
     "node": ">=14.0.0"
   }
-}
+},
