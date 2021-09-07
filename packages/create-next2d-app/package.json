@@ -1,9 +1,5 @@
 {
   "name": "create-next2d-app",
-  "private": true,
-  "workspaces": [
-    "packages/*"
-  ],
   "version": "0.0.6",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
@@ -15,7 +11,14 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Next2D/create-next2d-app.git"
+    "url": "git+https://github.com/Next2D/create-next2d-app.git",
+    "directory": "packages/create-next2d-app"
+  },
+  "bin": {
+    "create-next2d-app": "index.js"
+  },
+  "scripts": {
+    "dev": "node index.js"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
