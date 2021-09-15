@@ -406,6 +406,24 @@ function createApp (app_name, template = "@next2d/framework-template")
         }
     }
 
+    const ignoreList = [
+        "node_modules",
+        "coverage",
+        ".DS_Store",
+        ".idea",
+        "Thumbs.db",
+        "npm-debug.log*",
+        "yarn-debug.log*",
+        "yarn-error.log*",
+        "src/Config.file",
+        "src/Packages.file"
+    ];
+
+    fs.writeFileSync(
+        path.join(root, ".gitignore"),
+        ignoreList.join(os.EOL)
+    );
+
     install(root, appName, template, packageJson, [
         "@next2d/player",
         "@next2d/framework"
