@@ -202,11 +202,10 @@ function checkNpmVersion ()
  * @param  {string} root
  * @param  {string} app_name
  * @param  {string} template
- * @param  {object} package_json
  * @param  {array}  dependencies
  * @return {Promise<unknown>}
  */
-function install (root, app_name, template, package_json, dependencies)
+function install (root, app_name, template, dependencies)
 {
     console.log("Installing packages. This may take a few minutes.");
 
@@ -372,21 +371,19 @@ function createApp (app_name, template = "@next2d/framework-template")
     console.log(`Creating a new Next2D app in ${chalk.green(root)}.`);
     console.log();
 
-    const packageJson = {
-        "name": appName,
-        "version": "0.1.0",
-        "private": true,
-        "scripts": {
-            "start": "gulp",
-            "build": "gulp build",
-            "test": "gulp test",
-            "lint": "gulp lint"
-        }
-    };
-
     fs.writeFileSync(
         path.join(root, "package.json"),
-        JSON.stringify(packageJson, null, 2) + os.EOL
+        JSON.stringify({
+            "name": appName,
+            "version": "0.1.0",
+            "private": true,
+            "scripts": {
+                "start": "webpack serve",
+                "build": "webpack --mode production",
+                "lint": "eslint src/**/*.js",
+                "test": "jest"
+            }
+        }, null, 2) + os.EOL
     );
 
     process.chdir(root);
@@ -424,9 +421,14 @@ function createApp (app_name, template = "@next2d/framework-template")
         ignoreList.join(os.EOL)
     );
 
-    install(root, appName, template, packageJson, [
+    install(root, appName, template, [
         "@next2d/player",
-        "@next2d/framework"
+        "@next2d/framework",
+        "@next2d/webpack-auto-loader-plugin",
+        "@next2d/env",
+        "webpack",
+        "webpack-cli",
+        "webpack-dev-server"
     ]);
 }
 
