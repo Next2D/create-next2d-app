@@ -412,8 +412,8 @@ function createApp (app_name, template = "@next2d/framework-template")
         "npm-debug.log*",
         "yarn-debug.log*",
         "yarn-error.log*",
-        "src/Config.file",
-        "src/Packages.file"
+        "src/config/Config.js",
+        "src/Packages.js"
     ];
 
     fs.writeFileSync(
