@@ -381,7 +381,7 @@ function createApp (app_name, template = "@next2d/framework-template")
                 "start": "webpack serve",
                 "build": "webpack --mode production",
                 "lint": "eslint src/**/*.js",
-                "test": "jest"
+                "test": "npx jest"
             }
         }, null, 2) + os.EOL
     );
