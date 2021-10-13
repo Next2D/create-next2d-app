@@ -282,8 +282,8 @@ const install = function (root, app_name, template, dependencies)
                         console.log("    Starts the development server.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm run build")}`);
-                        console.log("    Bundles the app into static files for develop.");
+                        console.log(`  ${chalk.green("npm run generate")}`);
+                        console.log("    Generate the necessary View and ViewModel classes from the routing JSON file.");
 
                         console.log();
                         console.log(`  ${chalk.green("npm run build --env=\"prd\"")}`);

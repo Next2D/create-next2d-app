@@ -22,9 +22,9 @@ npm start
 npm start
 ```
 
-* Bundles the app into static files for develop.
+* Generate the necessary View and ViewModel classes from the routing JSON file.
 ```sh
-npm run build
+npm run generate
 ```
 
 * Bundles the app into static files for production.
