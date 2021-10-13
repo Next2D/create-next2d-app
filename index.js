@@ -26,62 +26,10 @@ const packageJson = require("./package.json");
 
 let projectName;
 
-function exec ()
-{
-    const program = new commander.Command(packageJson.name)
-        .version(packageJson.version)
-        .arguments("<project-directory>")
-        .usage(`${chalk.green("<project-directory>")} [options]`)
-        .action((name) => { projectName = name })
-        .option("--info", "print environment debug info")
-        .option(
-            "--template <path-to-template>",
-            "specify a template for the created project"
-        )
-        .on("--help", () =>
-        {
-            console.log();
-            console.log(`    A custom ${chalk.cyan("--template")} can be one of:`);
-            console.log(
-                `      - a custom template published on npm default: ${chalk.green(
-                    "@next2d/framework-template"
-                )}`
-            );
-
-            console.log();
-            console.log(
-                "    If you have any problems, do not hesitate to file an issue:"
-            );
-            console.log(
-                `      ${chalk.cyan(
-                    "https://github.com/Next2D/create-next2d-app/issues/new"
-                )}`
-            );
-            console.log();
-        })
-        .parse(process.argv);
-
-    if (typeof projectName === "undefined") {
-
-        console.error("Please specify the project directory:");
-        console.log(
-            `  npx ${chalk.cyan(program.name())} ${chalk.green("<project-directory>")}`
-        );
-        console.log();
-        console.log("For example:");
-        console.log(
-            `  npx ${chalk.cyan(program.name())} ${chalk.green("my-next2d-app")}`
-        );
-        process.exit(1);
-    }
-
-    createApp(projectName, program.template);
-}
-
 /**
  * @param {string} app_name
  */
-function checkAppName(app_name)
+const checkAppName = function (app_name)
 {
     const validationResult = validateProjectName(app_name);
     if (!validationResult.validForNewPackages) {
@@ -116,12 +64,12 @@ function checkAppName(app_name)
         );
         process.exit(1);
     }
-}
+};
 
 /**
  * @return {boolean}
  */
-function checkThatNpmCanReadCwd ()
+const checkThatNpmCanReadCwd = function ()
 {
     const cwd = process.cwd();
     let childOutput = null;
@@ -175,12 +123,12 @@ function checkThatNpmCanReadCwd ()
     }
 
     return false;
-}
+};
 
 /**
  * @return {object}
  */
-function checkNpmVersion ()
+const checkNpmVersion = function ()
 {
     let hasMinNpm  = false;
     let npmVersion = null;
@@ -196,7 +144,7 @@ function checkNpmVersion ()
         "hasMinNpm":  hasMinNpm,
         "npmVersion": npmVersion
     };
-}
+};
 
 /**
  * @param  {string} root
@@ -205,7 +153,7 @@ function checkNpmVersion ()
  * @param  {array}  dependencies
  * @return {Promise<unknown>}
  */
-function install (root, app_name, template, dependencies)
+const install = function (root, app_name, template, dependencies)
 {
     console.log("Installing packages. This may take a few minutes.");
 
@@ -324,7 +272,7 @@ function install (root, app_name, template, dependencies)
                     } else {
 
                         console.log();
-                        console.log(`Success! Created ${chalk.green(app_name)} at ${chalk.green(root)}`)
+                        console.log(`Success! Created ${chalk.green(app_name)} at ${chalk.green(root)}`);
 
                         console.log();
                         console.log("you can run several commands:");
@@ -346,20 +294,20 @@ function install (root, app_name, template, dependencies)
                         console.log("    Starts the test runner.");
 
                         console.log();
-                        console.log("We suggest that you begin by typing:")
+                        console.log("We suggest that you begin by typing:");
                         console.log(`  ${chalk.green("cd")} ${app_name}`);
                         console.log(`  ${chalk.green("npm start")}`);
                         console.log();
                     }
                 });
         });
-}
+};
 
 /**
  * @param {string} app_name
  * @param {string} [template="@next2d/framework-template"]
  */
-function createApp (app_name, template = "@next2d/framework-template")
+const createApp = function (app_name, template = "@next2d/framework-template")
 {
     const root    = path.resolve(app_name);
     const appName = path.basename(root);
@@ -381,7 +329,8 @@ function createApp (app_name, template = "@next2d/framework-template")
                 "start": "webpack serve",
                 "build": "webpack --mode production",
                 "lint": "eslint src/**/*.js",
-                "test": "npx jest"
+                "test": "npx jest",
+                "generate": "npx next2d-view-generator"
             }
         }, null, 2) + os.EOL
     );
@@ -430,6 +379,61 @@ function createApp (app_name, template = "@next2d/framework-template")
         "webpack-cli",
         "webpack-dev-server"
     ]);
-}
+};
+
+/**
+ * @return {void}
+ */
+const exec = function ()
+{
+    const program = new commander.Command(packageJson.name)
+        .version(packageJson.version)
+        .arguments("<project-directory>")
+        .usage(`${chalk.green("<project-directory>")} [options]`)
+        .action((name) => { projectName = name })
+        .option("--info", "print environment debug info")
+        .option(
+            "--template <path-to-template>",
+            "specify a template for the created project"
+        )
+        .on("--help", () =>
+        {
+            console.log();
+            console.log(`    A custom ${chalk.cyan("--template")} can be one of:`);
+            console.log(
+                `      - a custom template published on npm default: ${chalk.green(
+                    "@next2d/framework-template"
+                )}`
+            );
+
+            console.log();
+            console.log(
+                "    If you have any problems, do not hesitate to file an issue:"
+            );
+            console.log(
+                `      ${chalk.cyan(
+                    "https://github.com/Next2D/create-next2d-app/issues/new"
+                )}`
+            );
+            console.log();
+        })
+        .parse(process.argv);
+
+    if (typeof projectName === "undefined") {
+
+        console.error("Please specify the project directory:");
+        console.log(
+            `  npx ${chalk.cyan(program.name())} ${chalk.green("<project-directory>")}`
+        );
+        console.log();
+        console.log("For example:");
+        console.log(
+            `  npx ${chalk.cyan(program.name())} ${chalk.green("my-next2d-app")}`
+        );
+        process.exit(1);
+    }
+
+    createApp(projectName, program.template);
+};
 
 exec();

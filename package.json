@@ -1,6 +1,6 @@
 {
   "name": "create-next2d-app",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
@@ -10,6 +10,9 @@
     "Next2D",
     "create-next2d-app"
   ],
+  "scripts": {
+    "lint": "eslint index.js"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/create-next2d-app.git"
@@ -25,5 +28,8 @@
     "semver": "7.3.2",
     "tar-pack": "3.4.1",
     "validate-npm-package-name": "3.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0"
   }
 }
