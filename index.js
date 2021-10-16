@@ -330,7 +330,7 @@ const createApp = function (app_name, template = "@next2d/framework-template")
                 "build": "webpack --mode production",
                 "lint": "eslint src/**/*.js",
                 "test": "npx jest",
-                "generate": "npx next2d-view-generator"
+                "generate": "npx @next2d/view-generator"
             }
         }, null, 2) + os.EOL
     );
