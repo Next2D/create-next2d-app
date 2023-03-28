@@ -377,7 +377,11 @@ const createApp = function (app_name, template = "@next2d/framework-template")
         "@next2d/env",
         "webpack",
         "webpack-cli",
-        "webpack-dev-server"
+        "webpack-dev-server",
+        "@babel/core",
+        "@babel/preset-env",
+        "eslint",
+        "eslint-webpack-plugin"
     ]);
 };
 
