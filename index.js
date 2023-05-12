@@ -3,10 +3,10 @@
 "use strict";
 
 const version = process.versions.node;
-if (10 > version.split(".")[0]) {
+if (15 > version.split(".")[0]) {
     console.error(
         "You are running Node Version:" + version + ".\n" +
-        "Create Next2d App requires Node 10 or higher. \n" +
+        "Create Next2d App requires Node 15 or higher. \n" +
         "Please update your version of Node."
     );
     process.exit(1);
@@ -323,11 +323,13 @@ const createApp = function (app_name, template = "@next2d/framework-template")
         path.join(root, "package.json"),
         JSON.stringify({
             "name": appName,
-            "version": "0.1.0",
+            "description": `Details of ${appName}`,
+            "version": "0.0.1",
             "private": true,
+            "main": "src/index.js",
             "scripts": {
                 "start": "webpack serve",
-                "build": "webpack --mode production",
+                "build": "npx @next2d/builder",
                 "lint": "eslint src/**/*.js",
                 "test": "npx jest",
                 "generate": "npx @next2d/view-generator"
@@ -355,6 +357,7 @@ const createApp = function (app_name, template = "@next2d/framework-template")
     const ignoreList = [
         "node_modules",
         "coverage",
+        "dist",
         ".DS_Store",
         ".idea",
         "Thumbs.db",
@@ -362,7 +365,8 @@ const createApp = function (app_name, template = "@next2d/framework-template")
         "yarn-debug.log*",
         "yarn-error.log*",
         "src/config/Config.js",
-        "src/Packages.js"
+        "src/Packages.js",
+        "electron.index.json"
     ];
 
     fs.writeFileSync(
@@ -375,6 +379,7 @@ const createApp = function (app_name, template = "@next2d/framework-template")
         "@next2d/framework",
         "@next2d/webpack-auto-loader-plugin",
         "@next2d/env",
+        "electron",
         "webpack",
         "webpack-cli",
         "webpack-dev-server",
