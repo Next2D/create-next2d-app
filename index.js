@@ -286,6 +286,10 @@ const install = function (root, app_name, template, dependencies)
                         console.log("    Generate the necessary View and ViewModel classes from the routing JSON file.");
 
                         console.log();
+                        console.log(`  ${chalk.green("npm run [ios|android|windows|macos] --env=\"prd\"")}`);
+                        console.log("    Start the emulator for each platform.");
+
+                        console.log();
                         console.log(`  ${chalk.green("npm run build --env=\"prd\"")}`);
                         console.log("    Bundles the app into static files for production.");
 
@@ -329,6 +333,10 @@ const createApp = function (app_name, template = "@next2d/framework-template")
             "main": "src/index.js",
             "scripts": {
                 "start": "webpack serve",
+                "ios": "npx @next2d/builder run ios --platform ios --debug",
+                "android": "npx @next2d/builder run android --platform android --debug",
+                "macos": "npx @next2d/builder --platform macos --debug",
+                "windows": "npx @next2d/builder --platform windows --debug",
                 "build": "npx @next2d/builder",
                 "lint": "eslint src/**/*.js",
                 "test": "npx jest",
