@@ -28,9 +28,14 @@ npm start
 npm run generate
 ```
 
-* Bundles the app into static files for production.
+* Start the emulator for each platform.
 ```sh
-npm run build -- --env="prd"
+npm run [ios|android|windows|macos] -- --env prd
+```
+
+* Export a production version for each platform.
+```sh
+npm run build -- --platform [windows|macos|web] --env prd
 ```
 
 * Starts the test runner.
