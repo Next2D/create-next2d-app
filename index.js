@@ -286,12 +286,12 @@ const install = function (root, app_name, template, dependencies)
                         console.log("    Generate the necessary View and ViewModel classes from the routing JSON file.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm run [ios|android|windows|macos] --env=\"prd\"")}`);
+                        console.log(`  ${chalk.green("npm run [ios|android|windows|macos] -- --env prd")}`);
                         console.log("    Start the emulator for each platform.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm run build --env=\"prd\"")}`);
-                        console.log("    Bundles the app into static files for production.");
+                        console.log(`  ${chalk.green("npm run build -- --platform [windows|macos|web] --env prd")}`);
+                        console.log("    Export a production version for each platform.");
 
                         console.log();
                         console.log(`  ${chalk.green("npm test")}`);
@@ -383,7 +383,6 @@ const createApp = function (app_name, template = "@next2d/framework-template")
     );
 
     install(root, appName, template, [
-        "@next2d/player",
         "@next2d/framework",
         "@next2d/webpack-auto-loader-plugin",
         "@next2d/env",
