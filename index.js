@@ -203,8 +203,11 @@ const install = function (root, app_name, template, dependencies)
                     for (let idx = 0; idx < keys.length; ++idx) {
 
                         const name = keys[idx];
-                        packageJson.dependencies[name] = templateDependencies[name];
-
+                        if (templateDependencies[name] === "*") {
+                            dependencies.push(name);
+                        } else {
+                            packageJson.dependencies[name] = templateDependencies[name];
+                        }
                     }
 
                     fs.writeFileSync(
@@ -384,7 +387,6 @@ const createApp = function (app_name, template = "@next2d/framework-template")
 
     install(root, appName, template, [
         "@next2d/framework",
-        "@next2d/webpack-auto-loader-plugin",
         "@next2d/env",
         "electron",
         "webpack",
