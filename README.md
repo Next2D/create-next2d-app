@@ -11,8 +11,8 @@ Create Next2D apps with no build configuration.
 ## Quick Start
 
 ```sh
-npx create-next2d-app app-test
-cd app-test
+npx create-next2d-app sample-app
+cd sample-app
 npm start
 ```
 
