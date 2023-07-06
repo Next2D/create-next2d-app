@@ -2,8 +2,9 @@
 
 "use strict";
 
-const version = process.versions.node;
-if (15 > version.split(".")[0]) {
+const version: number = +process.versions.node.split(".")[0];
+
+if (15 > version) {
     console.error(
         "You are running Node Version:" + version + ".\n" +
         "Create Next2d App requires Node 15 or higher. \n" +
@@ -21,15 +22,17 @@ const path                = require("path");
 const semver              = require("semver");
 const spawn               = require("cross-spawn");
 const validateProjectName = require("validate-npm-package-name");
+const packageJson        = require("./package.json");
 
-const packageJson = require("./package.json");
-
-let projectName;
+let projectName: string = "";
 
 /**
- * @param {string} app_name
+ * @param  {string} app_name
+ * @return {void}
+ * @method
+ * @public
  */
-const checkAppName = function (app_name)
+const checkAppName = (app_name: string): void =>
 {
     const validationResult = validateProjectName(app_name);
     if (!validationResult.validForNewPackages) {
@@ -50,7 +53,12 @@ const checkAppName = function (app_name)
         process.exit(1);
     }
 
-    const dependencies = ["next2d", "next2d-player", "next2d-framework"].sort();
+    const dependencies: string[] = [
+        "next2d",
+        "next2d-player",
+        "next2d-framework"
+    ].sort();
+
     if (dependencies.includes(app_name)) {
         console.error(
             chalk.red(
@@ -68,11 +76,13 @@ const checkAppName = function (app_name)
 
 /**
  * @return {boolean}
+ * @method
+ * @public
  */
-const checkThatNpmCanReadCwd = function ()
+const checkThatNpmCanReadCwd = (): boolean =>
 {
-    const cwd = process.cwd();
-    let childOutput = null;
+    const cwd: string = process.cwd();
+    let childOutput: string = "";
     try {
         childOutput = spawn.sync("npm", ["config", "list"]).output.join("");
     } catch (err) {
@@ -83,14 +93,14 @@ const checkThatNpmCanReadCwd = function ()
         return true;
     }
 
-    const lines  = childOutput.split("\n");
+    const lines: string[] = childOutput.split("\n");
     const prefix = "; cwd = ";
     const line   = lines.find((line) => line.startsWith(prefix));
     if (typeof line !== "string") {
         return true;
     }
 
-    const npmCWD = line.substring(prefix.length);
+    const npmCWD: string = line.substring(prefix.length);
     if (npmCWD === cwd) {
         return true;
     }
@@ -125,13 +135,20 @@ const checkThatNpmCanReadCwd = function ()
     return false;
 };
 
+interface NpmVersion {
+    hasMinNpm: boolean;
+    npmVersion: string;
+}
+
 /**
  * @return {object}
+ * @method
+ * @public
  */
-const checkNpmVersion = function ()
+const checkNpmVersion = (): NpmVersion =>
 {
-    let hasMinNpm  = false;
-    let npmVersion = null;
+    let hasMinNpm: boolean = false;
+    let npmVersion: string = "0.0.0";
 
     try {
         npmVersion = execSync("npm --version").toString().trim();
@@ -146,21 +163,36 @@ const checkNpmVersion = function ()
     };
 };
 
+interface Packages {
+    dependencies?: {
+        [key: string]: string
+    }
+}
+
+interface TemplateJson {
+    package? : Packages
+}
+
 /**
  * @param  {string} root
  * @param  {string} app_name
  * @param  {string} template
  * @param  {array}  dependencies
- * @return {Promise<unknown>}
+ * @return {void}
  */
-const install = function (root, app_name, template, dependencies)
-{
+const install = (
+    root: string,
+    app_name: string,
+    template: string,
+    dependencies: string[]
+): void => {
+
     console.log("Installing packages. This may take a few minutes.");
 
-    const command = "npm";
+    const command: string = "npm";
     new Promise((resolve, reject) =>
     {
-        const args = [
+        const args: string[] = [
             "install",
             "--no-audit",
             "--save",
@@ -172,7 +204,7 @@ const install = function (root, app_name, template, dependencies)
 
         const child = spawn(command, args, { "stdio": "inherit" });
         child
-            .on("close", (code) =>
+            .on("close", (code: number) =>
             {
                 if (code !== 0) {
 
@@ -184,29 +216,34 @@ const install = function (root, app_name, template, dependencies)
                     console.log();
                     console.log(`Installing template: ${chalk.green(template)}`);
 
-                    const templatePath = path.dirname(
+                    const templatePath: string = path.dirname(
                         require.resolve(`${template}/package.json`, { "paths": [root] })
                     );
 
-                    const templateJsonPath = path.join(templatePath, "template.json");
+                    const templateJsonPath: string = path.join(templatePath, "template.json");
 
-                    let templateJson = {};
+                    let templateJson: TemplateJson = {};
                     if (fs.existsSync(templateJsonPath)) {
                         templateJson = require(templateJsonPath);
                     }
 
+                    // base package.json
                     const packageJson = require(`${root}/package.json`);
 
-                    const templatePackage = templateJson.package || {};
-                    const templateDependencies = templatePackage.dependencies || {};
-                    const keys = Object.keys(templateDependencies);
-                    for (let idx = 0; idx < keys.length; ++idx) {
+                    const templatePackage: Packages | void = templateJson.package;
+                    if (templatePackage) {
+                        const templateDependencies = templatePackage.dependencies;
+                        if (templateDependencies) {
+                            const keys: string[] = Object.keys(templateDependencies);
+                            for (let idx: number = 0; idx < keys.length; ++idx) {
 
-                        const name = keys[idx];
-                        if (templateDependencies[name] === "*") {
-                            dependencies.push(name);
-                        } else {
-                            packageJson.dependencies[name] = templateDependencies[name];
+                                const name = keys[idx];
+                                if (templateDependencies[name] === "*") {
+                                    dependencies.push(name);
+                                } else {
+                                    packageJson.dependencies[name] = templateDependencies[name];
+                                }
+                            }
                         }
                     }
 
@@ -215,7 +252,7 @@ const install = function (root, app_name, template, dependencies)
                         JSON.stringify(packageJson, null, 2) + os.EOL
                     );
 
-                    const templateDir = path.join(templatePath, "template");
+                    const templateDir: string = path.join(templatePath, "template");
                     if (fs.existsSync(templateDir)) {
                         fs.copySync(templateDir, root);
                     } else {
@@ -225,7 +262,7 @@ const install = function (root, app_name, template, dependencies)
                         return;
                     }
 
-                    const args = [
+                    const args: string[] = [
                         "uninstall",
                         "--no-audit",
                         "--save",
@@ -237,15 +274,16 @@ const install = function (root, app_name, template, dependencies)
 
                     const child = spawn(command, args, { "stdio": "inherit" });
                     child
-                        .on("close", (code) =>
+                        .on("close", (code: number) =>
                         {
                             if (code !== 0) {
                                 reject({
                                     "command": `${command} ${args.join(" ")}`
                                 });
                                 process.exit(1);
-                                return;
                             }
+
+                            // @ts-ignore
                             resolve();
                         });
                 }
@@ -253,7 +291,7 @@ const install = function (root, app_name, template, dependencies)
     })
         .then(() =>
         {
-            const args = [
+            const args: string[] = [
                 "install",
                 "--no-audit",
                 "--save",
@@ -264,7 +302,7 @@ const install = function (root, app_name, template, dependencies)
 
             const child = spawn(command, args, { "stdio": "inherit" });
             child
-                .on("close", (code) =>
+                .on("close", (code: number) =>
                 {
                     if (code !== 0) {
 
@@ -311,13 +349,19 @@ const install = function (root, app_name, template, dependencies)
 };
 
 /**
- * @param {string} app_name
- * @param {string} [template="@next2d/framework-template"]
+ * @param  {string} app_name
+ * @param  {string} [template="@next2d/framework-template"]
+ * @return {void}
+ * @method
+ * @public
  */
-const createApp = function (app_name, template = "@next2d/framework-template")
-{
-    const root    = path.resolve(app_name);
-    const appName = path.basename(root);
+const createApp = (
+    app_name: string,
+    template: string = "@next2d/framework-template"
+): void => {
+
+    const root: string    = path.resolve(app_name);
+    const appName: string = path.basename(root);
 
     checkAppName(appName);
     fs.ensureDirSync(app_name);
@@ -353,7 +397,7 @@ const createApp = function (app_name, template = "@next2d/framework-template")
         process.exit(1);
     }
 
-    const npmInfo = checkNpmVersion();
+    const npmInfo: NpmVersion = checkNpmVersion();
     if (!npmInfo.hasMinNpm) {
         if (npmInfo.npmVersion) {
             console.log(
@@ -365,7 +409,7 @@ const createApp = function (app_name, template = "@next2d/framework-template")
         }
     }
 
-    const ignoreList = [
+    const ignoreList: string[] = [
         "node_modules",
         "coverage",
         "dist",
@@ -401,14 +445,16 @@ const createApp = function (app_name, template = "@next2d/framework-template")
 
 /**
  * @return {void}
+ * @method
+ * @public
  */
-const exec = function ()
+const execute = (): void =>
 {
     const program = new commander.Command(packageJson.name)
         .version(packageJson.version)
         .arguments("<project-directory>")
         .usage(`${chalk.green("<project-directory>")} [options]`)
-        .action((name) => { projectName = name })
+        .action((name: string) => { projectName = name })
         .option("--info", "print environment debug info")
         .option(
             "--template <path-to-template>",
@@ -454,4 +500,4 @@ const exec = function ()
     createApp(projectName, program.template);
 };
 
-exec();
+execute();
