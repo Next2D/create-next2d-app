@@ -22,7 +22,7 @@ const path                = require("path");
 const semver              = require("semver");
 const spawn               = require("cross-spawn");
 const validateProjectName = require("validate-npm-package-name");
-const packageJson        = require("./package.json");
+const packageJson        = require("../package.json");
 
 let projectName: string = "";
 
