@@ -2,28 +2,30 @@
 
 "use strict";
 
-const version: number = +process.versions.node.split(".")[0];
-
-if (15 > version) {
-    console.error(
-        "You are running Node Version:" + version + ".\n" +
-        "Create Next2d App requires Node 15 or higher. \n" +
-        "Please update your version of Node."
-    );
-    process.exit(1);
-}
-
-const chalk               = require("chalk");
+const pc                  = require("picocolors");
 const commander           = require("commander");
+const packageJson         = require("../package.json");
+const path                = require("path");
+const validateProjectName = require("validate-npm-package-name");
 const execSync            = require("child_process").execSync;
 const fs                  = require("fs-extra");
 const os                  = require("os");
-const path                = require("path");
 const semver              = require("semver");
 const spawn               = require("cross-spawn");
-const validateProjectName = require("validate-npm-package-name");
-const packageJson        = require("../package.json");
 
+const recommendeVersion: number = 18;
+const version: string = process.versions.node;
+if (recommendeVersion > parseInt(version.split(".")[0])) {
+    pc.red(`You are running Node Version:${version}.
+View Generator requires Node ${recommendeVersion} or higher.
+Please update your version of Node.`);
+    process.exit(1);
+}
+
+/**
+ * @type {string}
+ * @private
+ */
 let projectName: string = "";
 
 /**
@@ -37,8 +39,8 @@ const checkAppName = (app_name: string): void =>
     const validationResult = validateProjectName(app_name);
     if (!validationResult.validForNewPackages) {
         console.error(
-            chalk.red(
-                `Cannot create a project named ${chalk.green(
+            pc.red(
+                `Cannot create a project named ${pc.green(
                     `"${app_name}"`
                 )} because of npm naming restrictions:\n`
             )
@@ -47,9 +49,9 @@ const checkAppName = (app_name: string): void =>
             ...validationResult.errors || [],
             ...validationResult.warnings || []
         ].forEach((error) => {
-            console.error(chalk.red(`  * ${error}`));
+            console.error(pc.red(`  * ${error}`));
         });
-        console.error(chalk.red("\nPlease choose a different project name."));
+        console.error(pc.red("\nPlease choose a different project name."));
         process.exit(1);
     }
 
@@ -61,14 +63,14 @@ const checkAppName = (app_name: string): void =>
 
     if (dependencies.includes(app_name)) {
         console.error(
-            chalk.red(
-                `Cannot create a project named ${chalk.green(
+            pc.red(
+                `Cannot create a project named ${pc.green(
                     `"${app_name}"`
                 )} because a dependency with the same name exists.\n` +
                 "Due to the way npm works, the following names are not allowed:\n\n"
             ) +
-            chalk.cyan(dependencies.map((depName) => `  ${depName}`).join("\n")) +
-            chalk.red("\n\nPlease choose a different project name.")
+            pc.cyan(dependencies.map((depName) => `  ${depName}`).join("\n")) +
+            pc.red("\n\nPlease choose a different project name.")
         );
         process.exit(1);
     }
@@ -106,10 +108,10 @@ const checkThatNpmCanReadCwd = (): boolean =>
     }
 
     console.error(
-        chalk.red(
+        pc.red(
             "Could not start an npm process in the right directory.\n\n" +
-            `The current directory is: ${chalk.bold(cwd)}\n` +
-            `However, a newly started npm process runs in: ${chalk.bold(
+            `The current directory is: ${pc.bold(cwd)}\n` +
+            `However, a newly started npm process runs in: ${pc.bold(
                 npmCWD
             )}\n\n` +
             "This is probably caused by a misconfigured system terminal shell."
@@ -118,15 +120,15 @@ const checkThatNpmCanReadCwd = (): boolean =>
 
     if (process.platform === "win32") {
         console.error(
-            chalk.red("On Windows, this can usually be fixed by running:\n\n") +
-            `  ${chalk.cyan(
+            pc.red("On Windows, this can usually be fixed by running:\n\n") +
+            `  ${pc.cyan(
                 "reg"
             )} delete "HKCU\\Software\\Microsoft\\Command Processor" /v AutoRun /f\n` +
-            `  ${chalk.cyan(
+            `  ${pc.cyan(
                 "reg"
             )} delete "HKLM\\Software\\Microsoft\\Command Processor" /v AutoRun /f\n\n` +
-            chalk.red("Try to run the above two lines in the terminal.\n") +
-            chalk.red(
+            pc.red("Try to run the above two lines in the terminal.\n") +
+            pc.red(
                 "To learn more about this problem, read: https://blogs.msdn.microsoft.com/oldnewthing/20071121-00/?p=24433/"
             )
         );
@@ -214,7 +216,7 @@ const install = (
                 } else {
 
                     console.log();
-                    console.log(`Installing template: ${chalk.green(template)}`);
+                    console.log(`Installing template: ${pc.green(template)}`);
 
                     const templatePath: string = path.dirname(
                         require.resolve(`${template}/package.json`, { "paths": [root] })
@@ -257,7 +259,7 @@ const install = (
                         fs.copySync(templateDir, root);
                     } else {
                         console.error(
-                            `Could not locate supplied template: ${chalk.green(templateDir)}`
+                            `Could not locate supplied template: ${pc.green(templateDir)}`
                         );
                         return;
                     }
@@ -313,35 +315,35 @@ const install = (
                     } else {
 
                         console.log();
-                        console.log(`Success! Created ${chalk.green(app_name)} at ${chalk.green(root)}`);
+                        console.log(`Success! Created ${pc.green(app_name)} at ${pc.green(root)}`);
 
                         console.log();
                         console.log("you can run several commands:");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm start")}`);
+                        console.log(`  ${pc.green("npm start")}`);
                         console.log("    Starts the development server.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm run generate")}`);
+                        console.log(`  ${pc.green("npm run generate")}`);
                         console.log("    Generate the necessary View and ViewModel classes from the routing JSON file.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm run [ios|android|windows|macos] -- --env prd")}`);
+                        console.log(`  ${pc.green("npm run [ios|android|windows|macos] -- --env prd")}`);
                         console.log("    Start the emulator for each platform.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm run build -- --platform [windows|macos|web] --env prd")}`);
+                        console.log(`  ${pc.green("npm run build -- --platform [windows|macos|web] --env prd")}`);
                         console.log("    Export a production version for each platform.");
 
                         console.log();
-                        console.log(`  ${chalk.green("npm test")}`);
+                        console.log(`  ${pc.green("npm test")}`);
                         console.log("    Starts the test runner.");
 
                         console.log();
                         console.log("We suggest that you begin by typing:");
-                        console.log(`  ${chalk.green("cd")} ${app_name}`);
-                        console.log(`  ${chalk.green("npm start")}`);
+                        console.log(`  ${pc.green("cd")} ${app_name}`);
+                        console.log(`  ${pc.green("npm start")}`);
                         console.log();
                     }
                 });
@@ -367,7 +369,7 @@ const createApp = (
     fs.ensureDirSync(app_name);
 
     console.log();
-    console.log(`Creating a new Next2D app in ${chalk.green(root)}.`);
+    console.log(`Creating a new Next2D app in ${pc.green(root)}.`);
     console.log();
 
     fs.writeFileSync(
@@ -377,16 +379,22 @@ const createApp = (
             "description": `Details of ${appName}`,
             "version": "0.0.1",
             "private": true,
-            "main": "src/index.js",
+            "main": "src/index.ts",
+            "type": "module",
             "scripts": {
-                "start": "webpack serve",
-                "ios": "npx @next2d/builder run ios --platform ios --debug",
-                "android": "npx @next2d/builder run android --platform android --debug",
-                "macos": "npx @next2d/builder --platform macos --debug",
-                "windows": "npx @next2d/builder --platform windows --debug",
+                "start": "vite",
+                "preview:ios": "npx @next2d/builder --platform ios --preview",
+                "preview:android": "npx @next2d/builder --platform android --preview",
+                "preview:macos": "npx @next2d/builder --platform macos --preview",
+                "preview:windows": "npx @next2d/builder --platform windows --preview",
+                "preview:linux": "npx @next2d/builder --platform linux --preview",
+                "build:steam:windows": "npx @next2d/builder --platform steam:windows --env prd",
+                "build:steam:macos": "npx @next2d/builder --platform steam:macos --env prd",
+                "build:steam:linux": "npx @next2d/builder --platform steam:linux --env prd",
+                "build:web": "npx @next2d/builder --platform web --env prd",
                 "build": "npx @next2d/builder",
-                "lint": "eslint src/**/*.js",
-                "test": "npx jest",
+                "lint": "eslint src/**/*.ts",
+                "test": "npx vitest",
                 "generate": "npx @next2d/view-generator"
             }
         }, null, 2) + os.EOL
@@ -401,7 +409,7 @@ const createApp = (
     if (!npmInfo.hasMinNpm) {
         if (npmInfo.npmVersion) {
             console.log(
-                chalk.yellow(
+                pc.yellow(
                     `You are using npm ${npmInfo.npmVersion} so the project will be bootstrapped with an old unsupported version of tools.\n\n` +
                     "Please update to npm 6 or higher for a better, fully supported experience.\n"
                 )
@@ -410,15 +418,28 @@ const createApp = (
     }
 
     const ignoreList: string[] = [
-        "node_modules",
-        "coverage",
-        "dist",
-        ".DS_Store",
-        ".idea",
-        "Thumbs.db",
+        "# Logs",
+        "logs",
+        "*.log",
         "npm-debug.log*",
         "yarn-debug.log*",
         "yarn-error.log*",
+        "pnpm-debug.log*",
+        "lerna-debug.log*",
+        "node_modules",
+        "dist",
+        "dist-ssr",
+        "*.local",
+        "# Editor directories and files",
+        ".vscode/*",
+        "!.vscode/extensions.json",
+        ".idea",
+        ".DS_Store",
+        "*.suo",
+        "*.ntvs*",
+        "*.njsproj",
+        "*.sln",
+        "*.sw?",
         "src/config/Config.js",
         "src/Packages.js",
         "electron.index.json"
@@ -430,12 +451,13 @@ const createApp = (
     );
 
     install(root, appName, template, [
+        "@next2d/player",
         "@next2d/framework",
-        "@next2d/env",
+        "@next2d/vite-auto-loader-plugin",
+        "jsdom",
+        "vite",
+        "vitest",
         "electron",
-        "webpack",
-        "webpack-cli",
-        "webpack-dev-server",
         "@capacitor/cli",
         "@capacitor/core",
         "@capacitor/ios",
@@ -453,7 +475,7 @@ const execute = (): void =>
     const program = new commander.Command(packageJson.name)
         .version(packageJson.version)
         .arguments("<project-directory>")
-        .usage(`${chalk.green("<project-directory>")} [options]`)
+        .usage(`${pc.green("<project-directory>")} [options]`)
         .action((name: string) => { projectName = name })
         .option("--info", "print environment debug info")
         .option(
@@ -463,9 +485,9 @@ const execute = (): void =>
         .on("--help", () =>
         {
             console.log();
-            console.log(`    A custom ${chalk.cyan("--template")} can be one of:`);
+            console.log(`    A custom ${pc.cyan("--template")} can be one of:`);
             console.log(
-                `      - a custom template published on npm default: ${chalk.green(
+                `      - a custom template published on npm default: ${pc.green(
                     "@next2d/framework-template"
                 )}`
             );
@@ -475,7 +497,7 @@ const execute = (): void =>
                 "    If you have any problems, do not hesitate to file an issue:"
             );
             console.log(
-                `      ${chalk.cyan(
+                `      ${pc.cyan(
                     "https://github.com/Next2D/create-next2d-app/issues/new"
                 )}`
             );
@@ -487,12 +509,12 @@ const execute = (): void =>
 
         console.error("Please specify the project directory:");
         console.log(
-            `  npx ${chalk.cyan(program.name())} ${chalk.green("<project-directory>")}`
+            `  npx ${pc.cyan(program.name())} ${pc.green("<project-directory>")}`
         );
         console.log();
         console.log("For example:");
         console.log(
-            `  npx ${chalk.cyan(program.name())} ${chalk.green("my-next2d-app")}`
+            `  npx ${pc.cyan(program.name())} ${pc.green("my-next2d-app")}`
         );
         process.exit(1);
     }

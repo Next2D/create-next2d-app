@@ -30,12 +30,16 @@ npm run generate
 
 * Start the emulator for each platform.
 ```sh
-npm run [ios|android|windows|macos] -- --env prd
+npm run preview:(ios|android|windows|macos)
 ```
 
 * Export a production version for each platform.
 ```sh
-npm run build -- --platform [windows|macos|web] --env prd
+npm run build:web
+```
+
+```sh
+npx @next2d/builder --platform web --env prd
 ```
 
 * Starts the test runner.
