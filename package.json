@@ -1,9 +1,11 @@
 {
   "name": "create-next2d-app",
-  "version": "1.2.6",
+  "version": "2.0.0",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
   "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "homepage": "https://next2d.app",
   "bugs": "https://github.com/Next2D/create-next2d-app/issues",
   "keywords": [
@@ -11,14 +13,13 @@
     "create-next2d-app"
   ],
   "scripts": {
-    "lint": "eslint src/**/*.ts",
-    "build": "tsc"
+    "lint": "eslint src/index.ts",
+    "publish": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Next2D/create-next2d-app.git"
   },
-  "types": "dist",
   "files": [
     "dist"
   ],
@@ -26,19 +27,19 @@
     "create-next2d-app": "dist/index.js"
   },
   "dependencies": {
-    "chalk": "4.1.2",
-    "commander": "4.1.1",
+    "@types/node": "^20.9.0",
+    "picocolors": "^1.0.0",
+    "commander": "11.1.0",
     "cross-spawn": "7.0.3",
-    "fs-extra": "9.0.1",
-    "semver": "7.5.3",
+    "fs-extra": "11.1.1",
+    "semver": "7.5.4",
     "tar-pack": "3.4.1",
     "validate-npm-package-name": "5.0.0"
   },
   "devDependencies": {
-    "@types/node": "^20.4.0",
-    "@typescript-eslint/eslint-plugin": "^5.61.0",
-    "@typescript-eslint/parser": "^5.61.0",
-    "eslint": "^8.1.0",
-    "typescript": "^5.1.6"
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "typescript": "^5.2.2"
   }
 }
