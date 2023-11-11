@@ -8,10 +8,18 @@ Create Next2D App
 
 Create Next2D apps with no build configuration.
 
-## Quick Start
+## Quick Start (TypeScript)
 
 ```sh
-npx create-next2d-app sample-app
+npx create-next2d-app sample-app --template @next2d/framework-typescript-template
+cd sample-app
+npm start
+```
+
+## Quick Start (JavaScript)
+
+```sh
+npx create-next2d-app sample-app --template @next2d/framework-template
 cd sample-app
 npm start
 ```

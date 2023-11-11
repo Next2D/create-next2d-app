@@ -197,8 +197,7 @@ const install = (
         const args: string[] = [
             "install",
             "--no-audit",
-            "--save",
-            "--save-exact",
+            "--save-dev",
             "--loglevel",
             "error",
             template
@@ -267,8 +266,7 @@ const install = (
                     const args: string[] = [
                         "uninstall",
                         "--no-audit",
-                        "--save",
-                        "--save-exact",
+                        "--save-dev",
                         "--loglevel",
                         "error",
                         template
@@ -296,8 +294,7 @@ const install = (
             const args: string[] = [
                 "install",
                 "--no-audit",
-                "--save",
-                "--save-exact",
+                "--save-dev",
                 "--loglevel",
                 "error"
             ].concat(dependencies);
@@ -519,7 +516,8 @@ const execute = (): void =>
         process.exit(1);
     }
 
-    createApp(projectName, program.template);
+    const options = program.opts();
+    createApp(projectName, options.template);
 };
 
 execute();
