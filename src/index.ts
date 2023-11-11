@@ -376,7 +376,6 @@ const createApp = (
             "description": `Details of ${appName}`,
             "version": "0.0.1",
             "private": true,
-            "main": "src/index.ts",
             "type": "module",
             "scripts": {
                 "start": "vite",
@@ -389,8 +388,6 @@ const createApp = (
                 "build:steam:macos": "npx @next2d/builder --platform steam:macos --env prd",
                 "build:steam:linux": "npx @next2d/builder --platform steam:linux --env prd",
                 "build:web": "npx @next2d/builder --platform web --env prd",
-                "build": "npx @next2d/builder",
-                "lint": "eslint src/**/*.ts",
                 "test": "npx vitest",
                 "generate": "npx @next2d/view-generator"
             }
@@ -437,8 +434,8 @@ const createApp = (
         "*.njsproj",
         "*.sln",
         "*.sw?",
-        "src/config/Config.js",
-        "src/Packages.js",
+        "src/config/Config.*",
+        "src/Packages.*",
         "electron.index.json"
     ];
 
@@ -479,7 +476,7 @@ const execute = (): void =>
             "--template <path-to-template>",
             "specify a template for the created project"
         )
-        .on("--help", () =>
+        .on("-h, --help", () =>
         {
             console.log();
             console.log(`    A custom ${pc.cyan("--template")} can be one of:`);

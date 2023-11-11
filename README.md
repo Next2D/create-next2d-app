@@ -24,36 +24,5 @@ cd sample-app
 npm start
 ```
 
-## Commands
-
-* Starts the development server.
-```sh
-npm start
-```
-
-* Generate the necessary View and ViewModel classes from the routing JSON file.
-```sh
-npm run generate
-```
-
-* Start the emulator for each platform.
-```sh
-npm run preview:(ios|android|windows|macos)
-```
-
-* Export a production version for each platform.
-```sh
-npm run build:web
-```
-
-```sh
-npx @next2d/builder --platform web --env prd
-```
-
-* Starts the test runner.
-```sh
-npm test
-```
-
 ## License
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT) - see the [LICENSE](LICENSE) file for details.
