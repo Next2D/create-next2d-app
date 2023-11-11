@@ -8,10 +8,18 @@ Create Next2D App
 
 Create Next2D apps with no build configuration.
 
-## Quick Start
+## Quick Start (TypeScript)
 
 ```sh
-npx create-next2d-app sample-app
+npx create-next2d-app sample-app --template @next2d/framework-typescript-template
+cd sample-app
+npm start
+```
+
+## Quick Start (JavaScript)
+
+```sh
+npx create-next2d-app sample-app --template @next2d/framework-template
 cd sample-app
 npm start
 ```
@@ -30,12 +38,16 @@ npm run generate
 
 * Start the emulator for each platform.
 ```sh
-npm run [ios|android|windows|macos] -- --env prd
+npm run preview:(ios|android|windows|macos)
 ```
 
 * Export a production version for each platform.
 ```sh
-npm run build -- --platform [windows|macos|web] --env prd
+npm run build:web
+```
+
+```sh
+npx @next2d/builder --platform web --env prd
 ```
 
 * Starts the test runner.
