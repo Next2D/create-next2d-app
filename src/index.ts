@@ -435,8 +435,6 @@ const createApp = (
         "*.njsproj",
         "*.sln",
         "*.sw?",
-        "src/config/Config.*",
-        "src/Packages.*",
         "electron/resources"
     ];
 
