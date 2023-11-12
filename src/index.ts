@@ -437,7 +437,7 @@ const createApp = (
         "*.sw?",
         "src/config/Config.*",
         "src/Packages.*",
-        "electron/resources/*"
+        "electron/resources"
     ];
 
     fs.writeFileSync(
