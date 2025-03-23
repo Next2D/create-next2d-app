@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "lint": "eslint src/index.ts",
-    "publish": "tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
