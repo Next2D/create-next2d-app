@@ -168,6 +168,9 @@ const checkNpmVersion = (): NpmVersion =>
 interface Packages {
     dependencies?: {
         [key: string]: string
+    },
+    devDependencies?: {
+        [key: string]: string
     }
 }
 
@@ -180,13 +183,15 @@ interface TemplateJson {
  * @param  {string} app_name
  * @param  {string} template
  * @param  {array}  dependencies
+ * @param  {array}  devDependencies
  * @return {void}
  */
 const install = (
     root: string,
     app_name: string,
     template: string,
-    dependencies: string[]
+    dependencies: string[],
+    devDependencies: string[]
 ): void => {
 
     console.log("Installing packages. This may take a few minutes.");
@@ -231,6 +236,10 @@ const install = (
                     // base package.json
                     const packageJson = require(`${root}/package.json`);
 
+                    // reset
+                    packageJson.dependencies    = {};
+                    packageJson.devDependencies = {};
+
                     const templatePackage: Packages | void = templateJson.package;
                     if (templatePackage) {
                         const templateDependencies = templatePackage.dependencies;
@@ -240,9 +249,23 @@ const install = (
 
                                 const name = keys[idx];
                                 if (templateDependencies[name] === "*") {
-                                    dependencies.push(name);
+                                    devDependencies.push(name);
                                 } else {
                                     packageJson.dependencies[name] = templateDependencies[name];
+                                }
+                            }
+                        }
+
+                        const templateDevDependencies = templatePackage.devDependencies;
+                        if (templateDevDependencies) {
+                            const keys: string[] = Object.keys(templateDevDependencies);
+                            for (let idx: number = 0; idx < keys.length; ++idx) {
+
+                                const name = keys[idx];
+                                if (templateDevDependencies[name] === "*") {
+                                    devDependencies.push(name);
+                                } else {
+                                    packageJson.devDependencies[name] = templateDevDependencies[name];
                                 }
                             }
                         }
@@ -291,13 +314,42 @@ const install = (
     })
         .then(() =>
         {
+            return new Promise((resolve, reject) =>
+            {
+                const args: string[] = [
+                    "install",
+                    "--no-audit",
+                    "--save",
+                    "--loglevel",
+                    "error"
+                ].concat(dependencies);
+
+                const child = spawn(command, args, { "stdio": "inherit" });
+                child
+                    .on("close", (code: number) =>
+                    {
+                        if (code !== 0) {
+                            reject({
+                                "command": `${command} ${args.join(" ")}`
+                            });
+                            process.exit(1);
+                        }
+
+                        // @ts-ignore
+                        resolve();
+                    });
+            });
+
+        })
+        .then(() =>
+        {
             const args: string[] = [
                 "install",
                 "--no-audit",
                 "--save-dev",
                 "--loglevel",
                 "error"
-            ].concat(dependencies);
+            ].concat(devDependencies);
 
             const child = spawn(command, args, { "stdio": "inherit" });
             child
@@ -324,14 +376,6 @@ const install = (
                         console.log();
                         console.log(`  ${pc.green("npm run generate")}`);
                         console.log("    Generate the necessary View and ViewModel classes from the routing JSON file.");
-
-                        console.log();
-                        console.log(`  ${pc.green("npm run [ios|android|windows|macos] -- --env prd")}`);
-                        console.log("    Start the emulator for each platform.");
-
-                        console.log();
-                        console.log(`  ${pc.green("npm run build -- --platform [windows|macos|web] --env prd")}`);
-                        console.log("    Export a production version for each platform.");
 
                         console.log();
                         console.log(`  ${pc.green("npm test")}`);
@@ -378,7 +422,7 @@ const createApp = (
             "private": true,
             "type": "module",
             "scripts": {
-                "start": "vite",
+                "start": "vite --host",
                 "preview:ios": "npx @next2d/builder --platform ios --preview",
                 "preview:android": "npx @next2d/builder --platform android --preview",
                 "preview:macos": "npx @next2d/builder --platform macos --preview",
@@ -443,13 +487,14 @@ const createApp = (
         ignoreList.join(os.EOL)
     );
 
-    install(root, appName, template, [
-        "@next2d/player",
-        "@next2d/framework",
+    install(root, appName, template, ["@next2d/framework"], [
         "@next2d/vite-auto-loader-plugin",
         "jsdom",
         "vite",
         "vitest",
+        "@vitest/web-worker",
+        "vitest-webgl-canvas-mock",
+        "@types/node",
         "@capacitor/cli",
         "@capacitor/core",
         "@capacitor/ios",

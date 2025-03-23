@@ -1,8 +1,8 @@
 {
   "name": "create-next2d-app",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "Create Next2D apps with no build configuration.",
-  "author": "Toshiyuki Ienaga<ienaga@tvon.jp>",
+  "author": "Toshiyuki Ienaga<ienaga@next2d.app>",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -27,19 +27,23 @@
     "create-next2d-app": "dist/index.js"
   },
   "dependencies": {
-    "@types/node": "^20.9.0",
-    "picocolors": "^1.0.0",
-    "commander": "11.1.0",
-    "cross-spawn": "7.0.3",
-    "fs-extra": "11.1.1",
-    "semver": "7.5.4",
+    "@types/node": "^22.13.11",
+    "commander": "13.1.0",
+    "cross-spawn": "7.0.6",
+    "fs-extra": "11.3.0",
+    "picocolors": "^1.1.1",
+    "semver": "7.7.1",
     "tar-pack": "3.4.1",
-    "validate-npm-package-name": "5.0.0"
+    "validate-npm-package-name": "6.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.10.0",
-    "@typescript-eslint/parser": "^6.10.0",
-    "eslint": "^8.53.0",
-    "typescript": "^5.2.2"
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.23.0",
+    "@typescript-eslint/eslint-plugin": "^8.27.0",
+    "@typescript-eslint/parser": "^8.27.0",
+    "eslint": "^9.23.0",
+    "eslint-plugin-unused-imports": "^4.1.4",
+    "globals": "^16.0.0",
+    "typescript": "^5.8.2"
   }
 }
