@@ -488,7 +488,7 @@ const createApp = (
     );
 
     install(root, appName, template, ["@next2d/framework"], [
-        "@next2d/vite-auto-loader-plugin",
+        "@next2d/vite-plugin-next2d-auto-loader",
         "jsdom",
         "vite",
         "vitest",
