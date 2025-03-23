@@ -13,7 +13,7 @@ const os                  = require("os");
 const semver              = require("semver");
 const spawn               = require("cross-spawn");
 
-const recommendeVersion: number = 20;
+const recommendeVersion: number = 18;
 const version: string = process.versions.node;
 if (recommendeVersion > parseInt(version.split(".")[0])) {
     pc.red(`You are running Node Version:${version}.
