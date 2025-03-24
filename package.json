@@ -27,7 +27,7 @@
     "create-next2d-app": "dist/index.js"
   },
   "dependencies": {
-    "@types/node": "^22.13.11",
+    "@types/node": "^22.13.12",
     "commander": "13.1.0",
     "cross-spawn": "7.0.6",
     "fs-extra": "11.3.0",
