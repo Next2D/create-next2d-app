@@ -1,6 +1,6 @@
 {
   "name": "create-next2d-app",
-  "version": "2.1.1",
+  "version": "2.1.3",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@next2d.app>",
   "license": "MIT",
