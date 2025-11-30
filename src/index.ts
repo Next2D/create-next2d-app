@@ -154,7 +154,7 @@ const checkNpmVersion = (): NpmVersion =>
 
     try {
         npmVersion = execSync("npm --version").toString().trim();
-        hasMinNpm  = semver.gte(npmVersion, "6.0.0");
+        hasMinNpm  = semver.gte(npmVersion, "10.0.0");
     } catch (err) {
         // ignore
     }

@@ -1,8 +1,6 @@
 .github
 node_modules
 src
-.eslintignore
-.eslintrc.json
 .gitattributes
 .gitignore
 tsconfig.eslint.json

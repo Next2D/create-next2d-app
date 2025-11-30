@@ -33,7 +33,6 @@
     "fs-extra": "11.3.2",
     "picocolors": "^1.1.1",
     "semver": "7.7.3",
-    "tar-pack": "3.4.1",
     "validate-npm-package-name": "7.0.0"
   },
   "devDependencies": {
