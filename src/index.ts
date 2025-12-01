@@ -13,7 +13,7 @@ const os                  = require("os");
 const semver              = require("semver");
 const spawn               = require("cross-spawn");
 
-const recommendeVersion: number = 18;
+const recommendeVersion: number = 22;
 const version: string = process.versions.node;
 if (recommendeVersion > parseInt(version.split(".")[0])) {
     pc.red(`You are running Node Version:${version}.
@@ -154,7 +154,7 @@ const checkNpmVersion = (): NpmVersion =>
 
     try {
         npmVersion = execSync("npm --version").toString().trim();
-        hasMinNpm  = semver.gte(npmVersion, "6.0.0");
+        hasMinNpm  = semver.gte(npmVersion, "10.0.0");
     } catch (err) {
         // ignore
     }
@@ -432,6 +432,10 @@ const createApp = (
                 "build:steam:macos": "npx @next2d/builder --platform steam:macos --env prd",
                 "build:steam:linux": "npx @next2d/builder --platform steam:linux --env prd",
                 "build:web": "npx @next2d/builder --platform web --env prd",
+                "open:ios": "npx @next2d/builder --platform ios --open --env prd",
+                "build:ios": "npx @next2d/builder --platform ios --build --env prd",
+                "open:android": "npx @next2d/builder --platform android --open --env prd",
+                "build:android": "npx @next2d/builder --platform android --build --env prd",
                 "build": "npx @next2d/builder",
                 "test": "npx vitest",
                 "generate": "npx @next2d/view-generator"
