@@ -13,11 +13,11 @@ const os                  = require("os");
 const semver              = require("semver");
 const spawn               = require("cross-spawn");
 
-const recommendeVersion: number = 22;
+const recommendedVersion: number = 22;
 const version: string = process.versions.node;
-if (recommendeVersion > parseInt(version.split(".")[0])) {
+if (recommendedVersion > parseInt(version.split(".")[0])) {
     pc.red(`You are running Node Version:${version}.
-View Generator requires Node ${recommendeVersion} or higher.
+View Generator requires Node ${recommendedVersion} or higher.
 Please update your version of Node.`);
     process.exit(1);
 }
