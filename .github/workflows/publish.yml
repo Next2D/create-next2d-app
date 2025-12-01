@@ -5,17 +5,20 @@ on:
     branches:
       - main
 
-permissions:
-  id-token: write
-  contents: read
-
 jobs:
-  publish:
+  build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
-      - run: npm install -g npm@latest
-      - run: npm ci
+        with:
+          node-version: 24
+          registry-url: "https://registry.npmjs.org"
+      - run: npm install
       - run: npm run release
-      - run: npm publish
+      - run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

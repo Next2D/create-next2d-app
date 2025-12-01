@@ -432,6 +432,10 @@ const createApp = (
                 "build:steam:macos": "npx @next2d/builder --platform steam:macos --env prd",
                 "build:steam:linux": "npx @next2d/builder --platform steam:linux --env prd",
                 "build:web": "npx @next2d/builder --platform web --env prd",
+                "open:ios": "npx @next2d/builder --platform ios --open --env prd",
+                "build:ios": "npx @next2d/builder --platform ios --build --env prd",
+                "open:android": "npx @next2d/builder --platform android --open --env prd",
+                "build:android": "npx @next2d/builder --platform android --build --env prd",
                 "build": "npx @next2d/builder",
                 "test": "npx vitest",
                 "generate": "npx @next2d/view-generator"
