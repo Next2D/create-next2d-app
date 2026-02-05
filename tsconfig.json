@@ -18,6 +18,7 @@
     "noFallthroughCasesInSwitch": true,
 
     "declaration": true,
+    "rootDir": "./src",
     "outDir": "./dist"
   },
   "include": [

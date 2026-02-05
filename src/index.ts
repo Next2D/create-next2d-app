@@ -393,14 +393,14 @@ const install = (
 
 /**
  * @param  {string} app_name
- * @param  {string} [template="@next2d/framework-template"]
+ * @param  {string} [template="@next2d/framework-typescript-template"]
  * @return {void}
  * @method
  * @public
  */
 const createApp = (
     app_name: string,
-    template: string = "@next2d/framework-template"
+    template: string = "@next2d/framework-typescript-template"
 ): void => {
 
     const root: string    = path.resolve(app_name);
@@ -483,7 +483,10 @@ const createApp = (
         "*.njsproj",
         "*.sln",
         "*.sw?",
-        "electron/resources"
+        "src/Packages.ts",
+        "src/config/Config.ts",
+        "electron/resources",
+        "electron/package-lock.json"
     ];
 
     fs.writeFileSync(
