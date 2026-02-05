@@ -1,6 +1,6 @@
 {
   "name": "create-next2d-app",
-  "version": "2.1.16",
+  "version": "2.2.0",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@next2d.app>",
   "license": "MIT",
@@ -27,8 +27,8 @@
     "create-next2d-app": "dist/index.js"
   },
   "dependencies": {
-    "@types/node": "^25.0.9",
-    "commander": "14.0.2",
+    "@types/node": "^25.2.0",
+    "commander": "14.0.3",
     "cross-spawn": "7.0.6",
     "fs-extra": "11.3.3",
     "picocolors": "^1.1.1",
@@ -38,11 +38,11 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.3",
     "@eslint/js": "^9.39.2",
-    "@typescript-eslint/eslint-plugin": "^8.53.1",
-    "@typescript-eslint/parser": "^8.53.1",
+    "@typescript-eslint/eslint-plugin": "^8.54.0",
+    "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
     "eslint-plugin-unused-imports": "^4.3.0",
-    "globals": "^17.0.0",
+    "globals": "^17.3.0",
     "typescript": "^5.9.3"
   }
 }
