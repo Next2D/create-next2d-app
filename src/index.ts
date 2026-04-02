@@ -4,7 +4,7 @@
 
 import pc from "picocolors";
 import { Command } from "commander";
-import packageJson from "../package.json";
+import packageJson from "../package.json" with { type: "json" };
 import path from "path";
 import validateProjectName from "validate-npm-package-name";
 import { execSync } from "child_process";
