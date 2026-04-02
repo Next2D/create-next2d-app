@@ -2,16 +2,17 @@
 
 "use strict";
 
-const pc                  = require("picocolors");
-const commander           = require("commander");
-const packageJson         = require("../package.json");
-const path                = require("path");
-const validateProjectName = require("validate-npm-package-name");
-const execSync            = require("child_process").execSync;
-const fs                  = require("fs-extra");
-const os                  = require("os");
-const semver              = require("semver");
-const spawn               = require("cross-spawn");
+import pc from "picocolors";
+import { Command } from "commander";
+import packageJson from "../package.json" with { type: "json" };
+import path from "path";
+import validateProjectName from "validate-npm-package-name";
+import { execSync } from "child_process";
+import { createRequire } from "module";
+import fs from "fs-extra";
+import os from "os";
+import semver from "semver";
+import spawn from "cross-spawn";
 
 const recommendedVersion: number = 22;
 const version: string = process.versions.node;
@@ -87,7 +88,7 @@ const checkThatNpmCanReadCwd = (): boolean =>
     let childOutput: string = "";
     try {
         childOutput = spawn.sync("npm", ["config", "list"]).output.join("");
-    } catch (err) {
+    } catch {
         return true;
     }
 
@@ -155,7 +156,7 @@ const checkNpmVersion = (): NpmVersion =>
     try {
         npmVersion = execSync("npm --version").toString().trim();
         hasMinNpm  = semver.gte(npmVersion, "10.0.0");
-    } catch (err) {
+    } catch {
         // ignore
     }
 
@@ -222,19 +223,20 @@ const install = (
                     console.log();
                     console.log(`Installing template: ${pc.green(template)}`);
 
+                    const requireFromRoot = createRequire(`${root}/package.json`);
                     const templatePath: string = path.dirname(
-                        require.resolve(`${template}/package.json`, { "paths": [root] })
+                        requireFromRoot.resolve(`${template}/package.json`)
                     );
 
                     const templateJsonPath: string = path.join(templatePath, "template.json");
 
                     let templateJson: TemplateJson = {};
                     if (fs.existsSync(templateJsonPath)) {
-                        templateJson = require(templateJsonPath);
+                        templateJson = JSON.parse(fs.readFileSync(templateJsonPath, "utf8")) as TemplateJson;
                     }
 
                     // base package.json
-                    const packageJson = require(`${root}/package.json`);
+                    const packageJson = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 
                     // reset
                     packageJson.dependencies    = {};
@@ -516,7 +518,7 @@ const createApp = (
  */
 const execute = (): void =>
 {
-    const program = new commander.Command(packageJson.name)
+    const program = new Command(packageJson.name)
         .version(packageJson.version)
         .arguments("<project-directory>")
         .usage(`${pc.green("<project-directory>")} [options]`)
