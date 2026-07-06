@@ -425,22 +425,23 @@ const createApp = (
             "type": "module",
             "scripts": {
                 "start": "vite --host",
-                "preview:ios": "npx @next2d/builder --platform ios --preview",
-                "preview:android": "npx @next2d/builder --platform android --preview",
-                "preview:macos": "npx @next2d/builder --platform macos --preview",
-                "preview:windows": "npx @next2d/builder --platform windows --preview",
-                "preview:linux": "npx @next2d/builder --platform linux --preview",
-                "open:ios": "npx @next2d/builder --platform ios --open",
-                "open:android": "npx @next2d/builder --platform android --open",
-                "build:steam:windows": "npx @next2d/builder --platform steam:windows",
-                "build:steam:macos": "npx @next2d/builder --platform steam:macos",
-                "build:steam:linux": "npx @next2d/builder --platform steam:linux",
-                "build:web": "npx @next2d/builder --platform web",
-                "build:ios": "npx @next2d/builder --platform ios --build",
-                "build:android": "npx @next2d/builder --platform android --build",
-                "build": "npx @next2d/builder",
+                "preview:ios": "npx -y @next2d/builder --platform ios --preview",
+                "preview:android": "npx -y @next2d/builder --platform android --preview",
+                "preview:macos": "npx -y @next2d/builder --platform macos --preview",
+                "preview:windows": "npx -y @next2d/builder --platform windows --preview",
+                "preview:linux": "npx -y @next2d/builder --platform linux --preview",
+                "open:ios": "npx -y @next2d/builder --platform ios --open",
+                "open:android": "npx -y @next2d/builder --platform android --open",
+                "build:steam:windows": "npx -y @next2d/builder --platform steam:windows",
+                "build:steam:macos": "npx -y @next2d/builder --platform steam:macos",
+                "build:steam:linux": "npx -y @next2d/builder --platform steam:linux",
+                "build:web": "npx -y @next2d/builder --platform web",
+                "build:ios": "npx -y @next2d/builder --platform ios --build",
+                "build:android": "npx -y @next2d/builder --platform android --build",
+                "build:xbox": "npx -y @next2d/builder --platform xbox",
+                "build": "npx -y @next2d/builder",
                 "test": "npx vitest",
-                "generate": "npx @next2d/view-generator"
+                "generate": "npx -y @next2d/view-generator"
             }
         }, null, 2) + os.EOL
     );
