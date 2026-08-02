@@ -1,5 +1,5 @@
 /**
- * A minimal drop-in replacement for `cross-spawn`.
+ * A minimal drop-in replacement for the `cross-spawn` API used by this tool.
  *
  * Delegates to Node's `child_process` and, like `cross-spawn`, transparently
  * resolves commands (e.g. `npm.cmd`) on Windows by running through a shell.
@@ -41,11 +41,9 @@ const spawnSyncFn = (
 
 type SpawnFn = typeof spawnFn & {
     sync: typeof spawnSyncFn;
-    spawn: typeof spawnFn;
 };
 
 const spawn: SpawnFn = spawnFn as SpawnFn;
 spawn.sync = spawnSyncFn;
-spawn.spawn = spawnFn;
 
 export default spawn;

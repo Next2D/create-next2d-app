@@ -1,8 +1,9 @@
 /**
  * A minimal drop-in replacement for the `fs-extra` API used by this tool.
  *
- * Re-exports Node's `fs` and adds the `ensureDirSync` and `copySync` helpers
- * that are not part of the built-in module.
+ * Exposes only the functions used by `src/index.ts` (`ensureDirSync`,
+ * `writeFileSync`, `existsSync`, `readFileSync`, `copySync`) plus the Node
+ * primitives required internally.
  */
 
 import * as fs from "node:fs";
@@ -13,7 +14,7 @@ const ensureDirSync = (dir: string): void => {
 };
 
 const copySync = (src: string, dest: string): void => {
-    const stat = fs.statSync(src);
+    const stat = fs.lstatSync(src);
     if (stat.isDirectory()) {
         fs.mkdirSync(dest, { "recursive": true });
         for (const entry of fs.readdirSync(src)) {
@@ -27,13 +28,12 @@ const copySync = (src: string, dest: string): void => {
     }
 };
 
-const fsExtra: typeof fs & {
-    ensureDirSync: typeof ensureDirSync;
-    copySync: typeof copySync;
-} = {
-    ...fs,
-    ensureDirSync,
-    copySync
+const fsExtra = {
+    "ensureDirSync": ensureDirSync,
+    "copySync": copySync,
+    "existsSync": fs.existsSync,
+    "readFileSync": fs.readFileSync,
+    "writeFileSync": fs.writeFileSync
 };
 
 export default fsExtra;
