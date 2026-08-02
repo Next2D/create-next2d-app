@@ -11,8 +11,15 @@ test("spawn.sync captures combined output", () => {
 
 test("spawn.sync reports an error for a missing command", () => {
     const result = spawn.sync("definitely-not-a-command-xyz", []);
-    expect(result.status).toBeNull();
-    expect(result.error).toBeTruthy();
+    if (process.platform === "win32") {
+        // Windows resolves through a shell, so the failure surfaces as a
+        // non-zero exit status instead of a null status.
+        expect(result.status).not.toBe(0);
+        expect(result.status).not.toBeNull();
+    } else {
+        expect(result.status).toBeNull();
+        expect(result.error).toBeTruthy();
+    }
 });
 
 test("spawn returns a child process with event methods", () => {
