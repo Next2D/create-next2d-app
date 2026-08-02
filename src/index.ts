@@ -2,17 +2,17 @@
 
 "use strict";
 
-import pc from "picocolors";
-import { Command } from "commander";
+import pc from "./lib/colors.js";
+import Command from "./lib/command.js";
 import packageJson from "../package.json" with { type: "json" };
 import path from "path";
-import validateProjectName from "validate-npm-package-name";
+import validateProjectName from "./lib/validate.js";
 import { execSync } from "child_process";
 import { createRequire } from "module";
-import fs from "fs-extra";
+import fs from "./lib/fs-extra.js";
 import os from "os";
-import semver from "semver";
-import spawn from "cross-spawn";
+import { gte as semverGte } from "./lib/semver.js";
+import spawn from "./lib/spawn.js";
 
 const recommendedVersion: number = 22;
 const version: string = process.versions.node;
@@ -155,7 +155,7 @@ const checkNpmVersion = (): NpmVersion =>
 
     try {
         npmVersion = execSync("npm --version").toString().trim();
-        hasMinNpm  = semver.gte(npmVersion, "10.0.0");
+        hasMinNpm  = semverGte(npmVersion, "10.0.0");
     } catch {
         // ignore
     }
@@ -567,7 +567,7 @@ const execute = (): void =>
     }
 
     const options = program.opts();
-    createApp(projectName, options.template);
+    createApp(projectName, options.template as string | undefined);
 };
 
 execute();
