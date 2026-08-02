@@ -13,8 +13,11 @@ jobs:
   lint:
     uses: ./.github/workflows/lint.yml
 
+  integration:
+    uses: ./.github/workflows/ci.yml
+
   publish:
-    needs: [lint]
+    needs: [lint, integration]
     runs-on: ubuntu-latest
     permissions:
       contents: read
