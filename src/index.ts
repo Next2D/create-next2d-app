@@ -13,6 +13,7 @@ import fs from "./lib/fs-extra.js";
 import os from "os";
 import { gte as semverGte } from "./lib/semver.js";
 import spawn from "./lib/spawn.js";
+import { initializeElectronConfig } from "./lib/electron-config.js";
 
 const recommendedVersion: number = 22;
 const version: string = process.versions.node;
@@ -281,6 +282,7 @@ const install = (
                     const templateDir: string = path.join(templatePath, "template");
                     if (fs.existsSync(templateDir)) {
                         fs.copySync(templateDir, root);
+                        initializeElectronConfig(root, app_name);
                     } else {
                         console.error(
                             `Could not locate supplied template: ${pc.green(templateDir)}`
@@ -432,14 +434,14 @@ const createApp = (
                 "preview:linux": "npx -y @next2d/builder --platform linux --preview",
                 "open:ios": "npx -y @next2d/builder --platform ios --open",
                 "open:android": "npx -y @next2d/builder --platform android --open",
-                "build:steam:windows": "npx -y @next2d/builder --platform steam:windows",
-                "build:steam:macos": "npx -y @next2d/builder --platform steam:macos",
-                "build:steam:linux": "npx -y @next2d/builder --platform steam:linux",
-                "build:web": "npx -y @next2d/builder --platform web",
-                "build:ios": "npx -y @next2d/builder --platform ios --build",
-                "build:android": "npx -y @next2d/builder --platform android --build",
-                "build:xbox": "npx -y @next2d/builder --platform xbox",
-                "build": "npx -y @next2d/builder",
+                "build:steam:windows": "npx -y @next2d/builder --platform steam:windows --env prd",
+                "build:steam:macos": "npx -y @next2d/builder --platform steam:macos --env prd",
+                "build:steam:linux": "npx -y @next2d/builder --platform steam:linux --env prd",
+                "build:steam:manifest": "npx -y @next2d/builder --env prd --steam-manifest",
+                "build:web": "npx -y @next2d/builder --platform web --env prd",
+                "build:ios": "npx -y @next2d/builder --platform ios  --env prd --build",
+                "build:android": "npx -y @next2d/builder --platform android --env prd --build",
+                "build:xbox": "npx -y @next2d/builder --platform xbox --env prd",
                 "test": "npx vitest",
                 "generate": "npx -y @next2d/view-generator"
             }
@@ -487,9 +489,7 @@ const createApp = (
         "*.sln",
         "*.sw?",
         "src/Packages.ts",
-        "src/config/Config.ts",
-        "electron/resources",
-        "electron/package-lock.json"
+        "src/config/Config.ts"
     ];
 
     fs.writeFileSync(
@@ -504,11 +504,7 @@ const createApp = (
         "vitest",
         "@vitest/web-worker",
         "vitest-webgl-canvas-mock",
-        "@types/node",
-        "@capacitor/cli",
-        "@capacitor/core",
-        "@capacitor/ios",
-        "@capacitor/android"
+        "@types/node"
     ]);
 };
 
