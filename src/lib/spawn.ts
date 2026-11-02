@@ -24,7 +24,7 @@ const spawnFn = (
 ): ChildProcess => {
     const opts: SpawnOptions = isWindows
         ? { ...options, "shell": true }
-        : (options ?? {});
+        : options ?? {};
     return nodeSpawn(command, args ?? [], opts);
 };
 
@@ -35,7 +35,7 @@ const spawnSyncFn = (
 ) => {
     const opts: SpawnSyncOptions = isWindows
         ? { ...options, "shell": true }
-        : (options ?? {});
+        : options ?? {};
     return nodeSpawnSync(command, args ?? [], opts);
 };
 

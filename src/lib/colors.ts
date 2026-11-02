@@ -19,7 +19,7 @@ const isColorSupported: boolean =
     !(!!env.NO_COLOR || argv.includes("--no-color")) &&
     (!!env.FORCE_COLOR || argv.includes("--color") ||
      process.platform === "win32" ||
-     ((process.stdout || {}).isTTY && env.TERM !== "dumb") ||
+     (process.stdout || {}).isTTY && env.TERM !== "dumb" ||
      !!env.CI);
 
 const replaceClose = (
