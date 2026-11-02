@@ -1,6 +1,6 @@
 {
   "name": "create-next2d-app",
-  "version": "2.5.1",
+  "version": "2.6.0",
   "description": "Create Next2D apps with no build configuration.",
   "author": "Toshiyuki Ienaga<ienaga@next2d.app>",
   "license": "MIT",
@@ -14,7 +14,7 @@
     "create-next2d-app"
   ],
   "scripts": {
-    "lint": "eslint src/index.ts",
+    "lint": "eslint src",
     "release": "tsc",
     "test": "vitest run --coverage"
   },
@@ -37,7 +37,7 @@
     "@vitest/coverage-v8": "^5.0.5",
     "eslint": "^10.14.0",
     "eslint-plugin-unused-imports": "^4.4.1",
-    "globals": "^17.13.0",
+    "globals": "^17.14.0",
     "typescript": "^6.0.3",
     "vitest": "^5.0.5"
   }

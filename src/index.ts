@@ -14,6 +14,8 @@ import os from "os";
 import { gte as semverGte } from "./lib/semver.js";
 import spawn from "./lib/spawn.js";
 import { initializeElectronConfig } from "./lib/electron-config.js";
+import { initializeXboxConfig } from "./lib/xbox-config.js";
+import { createIgnoreList, createScripts } from "./lib/project-files.js";
 
 const recommendedVersion: number = 22;
 const version: string = process.versions.node;
@@ -173,6 +175,9 @@ interface Packages {
     },
     devDependencies?: {
         [key: string]: string
+    },
+    scripts?: {
+        [key: string]: string
     }
 }
 
@@ -245,6 +250,10 @@ const install = (
 
                     const templatePackage: Packages | void = templateJson.package;
                     if (templatePackage) {
+                        if (templatePackage.scripts) {
+                            packageJson.scripts = createScripts(templatePackage.scripts);
+                        }
+
                         const templateDependencies = templatePackage.dependencies;
                         if (templateDependencies) {
                             const keys: string[] = Object.keys(templateDependencies);
@@ -283,6 +292,7 @@ const install = (
                     if (fs.existsSync(templateDir)) {
                         fs.copySync(templateDir, root);
                         initializeElectronConfig(root, app_name);
+                        initializeXboxConfig(root, app_name);
                     } else {
                         console.error(
                             `Could not locate supplied template: ${pc.green(templateDir)}`
@@ -425,26 +435,7 @@ const createApp = (
             "version": "0.0.1",
             "private": true,
             "type": "module",
-            "scripts": {
-                "start": "vite --host",
-                "preview:ios": "npx -y @next2d/builder --platform ios --preview",
-                "preview:android": "npx -y @next2d/builder --platform android --preview",
-                "preview:macos": "npx -y @next2d/builder --platform macos --preview",
-                "preview:windows": "npx -y @next2d/builder --platform windows --preview",
-                "preview:linux": "npx -y @next2d/builder --platform linux --preview",
-                "open:ios": "npx -y @next2d/builder --platform ios --open",
-                "open:android": "npx -y @next2d/builder --platform android --open",
-                "build:steam:windows": "npx -y @next2d/builder --platform steam:windows --env prd",
-                "build:steam:macos": "npx -y @next2d/builder --platform steam:macos --env prd",
-                "build:steam:linux": "npx -y @next2d/builder --platform steam:linux --env prd",
-                "build:steam:manifest": "npx -y @next2d/builder --env prd --steam-manifest",
-                "build:web": "npx -y @next2d/builder --platform web --env prd",
-                "build:ios": "npx -y @next2d/builder --platform ios  --env prd --build",
-                "build:android": "npx -y @next2d/builder --platform android --env prd --build",
-                "build:xbox": "npx -y @next2d/builder --platform xbox --env prd",
-                "test": "npx vitest",
-                "generate": "npx -y @next2d/view-generator"
-            }
+            "scripts": createScripts()
         }, null, 2) + os.EOL
     );
 
@@ -465,36 +456,11 @@ const createApp = (
         }
     }
 
-    const ignoreList: string[] = [
-        "# Logs",
-        "logs",
-        "*.log",
-        "npm-debug.log*",
-        "yarn-debug.log*",
-        "yarn-error.log*",
-        "pnpm-debug.log*",
-        "lerna-debug.log*",
-        "node_modules",
-        "dist",
-        "dist-ssr",
-        "*.local",
-        "# Editor directories and files",
-        ".vscode/*",
-        "!.vscode/extensions.json",
-        ".idea",
-        ".DS_Store",
-        "*.suo",
-        "*.ntvs*",
-        "*.njsproj",
-        "*.sln",
-        "*.sw?",
-        "src/Packages.ts",
-        "src/config/Config.ts"
-    ];
+    const ignoreList: string[] = createIgnoreList();
 
     fs.writeFileSync(
         path.join(root, ".gitignore"),
-        ignoreList.join(os.EOL)
+        ignoreList.join(os.EOL) + os.EOL
     );
 
     install(root, appName, template, ["@next2d/framework"], [
